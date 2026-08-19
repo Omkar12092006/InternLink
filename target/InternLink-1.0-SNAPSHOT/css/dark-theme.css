@@ -1,0 +1,519 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Aug 2026, 16:51:57
+    Author     : ANJESH
+*/
+
+/* ========================================
+   InternLink Dark Theme
+   ======================================== */
+
+:root {
+    --bg-main: #0B0F0E;
+    --bg-card: #121816;
+    --bg-input: #171E1B;
+    --bg-panel: #1A221E;
+    --bg-elevated: #1F2A24;
+
+    --green-main: #22C55E;
+    --green-dark: #16A34A;
+    --green-light: #86EFAC;
+
+    --text-main: #F3F4F6;
+    --text-secondary: #A7B0AB;
+    --border: #26332D;
+    --muted: #8A9B93;
+
+    --danger: #EF4444;
+    --warning: #F59E0B;
+}
+
+html, body {
+    background-color: var(--bg-main) !important;
+    color: var(--text-main) !important;
+}
+
+body {
+    background-image: none !important;
+    background-attachment: initial !important;
+}
+
+body, body * {
+    box-sizing: border-box;
+}
+
+body,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6,
+body p,
+body span,
+body label,
+body a,
+body li,
+body td,
+body th,
+body strong,
+body em {
+    color: var(--text-main);
+}
+
+body a {
+    color: var(--green-light);
+    text-decoration: none;
+}
+
+body a:hover {
+    color: var(--green-main);
+}
+
+body header,
+body nav,
+body footer,
+body main,
+body section,
+body aside,
+body .glass-card,
+body .dark-card,
+body [class*="bg-surface"],
+body [class*="bg-white"],
+body [class*="bg-background"],
+body [class*="bg-gray"],
+body [class*="bg-[#"],
+body .bg-surface-container-lowest,
+body .bg-surface-container-low,
+body .bg-surface-container,
+body .bg-surface-container-high,
+body .bg-surface-container-highest,
+body .bg-surface-bright,
+body .bg-surface,
+body .bg-white,
+body .bg-gray-100,
+body .bg-gray-50,
+body .bg-background {
+    background-color: var(--bg-card) !important;
+}
+
+body .bg-primary,
+body .bg-secondary,
+body .bg-green-600,
+body .bg-green-700,
+body .bg-black,
+body .bg-secondary-container {
+    background-color: var(--green-main) !important;
+}
+
+body .bg-primary-container,
+body .bg-secondary-container,
+body .bg-[#0B0F0E] {
+    background-color: var(--bg-panel) !important;
+}
+
+body .text-primary,
+body .text-on-background,
+body .text-on-surface,
+body .text-on-surface-variant,
+body .text-primary-fixed,
+body .text-primary-fixed-dim,
+body .text-gray-700,
+body .text-gray-600,
+body .text-gray-500,
+body .text-gray-800,
+body .text-black,
+body .text-outline,
+body .text-on-primary-container,
+body .text-on-secondary-container {
+    color: var(--text-main) !important;
+}
+
+body .text-gray-500,
+body .text-gray-600,
+body .text-on-surface-variant,
+body .text-outline {
+    color: var(--text-secondary) !important;
+}
+
+body .text-secondary,
+body .text-green-700,
+body .text-green-600,
+body .text-secondary-fixed,
+body .text-green-400,
+body .text-green-300 {
+    color: var(--green-light) !important;
+}
+
+body input,
+body textarea,
+body select,
+body button,
+body .dark-input,
+body .form-control,
+body .border,
+body .border-outline,
+body .border-outline-variant,
+body .border-surface-container,
+body .border-gray-200,
+body .border-gray-300,
+body .rounded-lg,
+body .rounded-xl,
+body .rounded-md {
+    border-color: var(--border) !important;
+}
+
+body input,
+body textarea,
+body select,
+body button,
+body .dark-input,
+body .form-control {
+    background-color: var(--bg-input) !important;
+    color: var(--text-main) !important;
+}
+
+body input::placeholder,
+body textarea::placeholder,
+body select::placeholder {
+    color: var(--muted) !important;
+}
+
+body .shadow,
+body .shadow-sm,
+body .shadow-lg,
+body .card-shadow,
+body .elevation-l1,
+body .elevation-l2 {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.22), 0 1px 2px rgba(0,0,0,0.18) !important;
+}
+
+body .border-b,
+body .border-t,
+body .border-r,
+body .border-l {
+    border-color: var(--border) !important;
+}
+
+/* ========================================
+   Enhanced Animations & Transitions
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    }
+}
+
+.fade-in { animation: fadeIn 0.6s ease-out; }
+.slide-in-left { animation: slideInLeft 0.5s ease-out; }
+.slide-in-right { animation: slideInRight 0.5s ease-out; }
+
+/* ========================================
+   Button Styles
+   ======================================== */
+
+body button,
+body .btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+body button:hover,
+body .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(34, 197, 94, 0.3) !important;
+}
+
+body button:active,
+body .btn:active {
+    transform: translateY(0px);
+}
+
+/* ========================================
+   Form Inputs Enhancement
+   ======================================== */
+
+body input[type="text"],
+body input[type="email"],
+body input[type="password"],
+body input[type="search"],
+body textarea,
+body select {
+    transition: all 0.2s ease;
+}
+
+body input[type="text"]:focus,
+body input[type="email"]:focus,
+body input[type="password"]:focus,
+body input[type="search"]:focus,
+body textarea:focus,
+body select:focus {
+    border-color: var(--green-main) !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+}
+
+/* ========================================
+   Card & Container Styles
+   ======================================== */
+
+body .card,
+body .card-shadow,
+body .elevation-1,
+body .elevation-2 {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(34, 197, 94, 0.05) 100%);
+    transition: all 0.3s ease;
+}
+
+body .card:hover,
+body .elevation-2:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(34, 197, 94, 0.15) !important;
+    border-color: var(--green-main) !important;
+}
+
+/* ========================================
+   Glass Morphism
+   ======================================== */
+
+body .glass-card,
+body .glass-morphism {
+    background: rgba(18, 24, 22, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+/* ========================================
+   Badges & Tags
+   ======================================== */
+
+body .badge,
+body .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: rgba(34, 197, 94, 0.1);
+    color: var(--green-light);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+}
+
+body .badge:hover,
+body .tag:hover {
+    background-color: rgba(34, 197, 94, 0.2);
+    border-color: var(--green-main);
+}
+
+/* ========================================
+   Loading States
+   ======================================== */
+
+body .loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+body .spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(34, 197, 94, 0.2);
+    border-top: 3px solid var(--green-main);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+
+body ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body ::-webkit-scrollbar-track {
+    background: var(--bg-card);
+}
+
+body ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+body ::-webkit-scrollbar-thumb:hover {
+    background: var(--green-main);
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+body :focus-visible {
+    outline: 2px solid var(--green-main) !important;
+    outline-offset: 2px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   Responsive Utilities
+   ======================================== */
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    body h1 {
+        font-size: 24px;
+    }
+
+    body h2 {
+        font-size: 20px;
+    }
+
+    body button,
+    body .btn {
+        padding: 12px 16px;
+    }
+}
+
+body .text-white {
+    color: var(--text-main) !important;
+}
+
+body .bg-white {
+    background-color: var(--bg-card) !important;
+}
+
+body .dark-btn,
+body button:not(.bg-primary):not(.bg-secondary):not(.bg-black):not(.bg-green-600):not(.bg-green-700) {
+    background-color: var(--bg-panel) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border) !important;
+}
+
+body .dark-btn:hover,
+body button:hover {
+    filter: brightness(1.08);
+}
+
+body .material-symbols-outlined {
+    color: inherit !important;
+}
+
+/* Existing dark theme helpers */
+.dark-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.dark-title {
+    color: var(--text-main);
+}
+
+.dark-subtitle {
+    color: var(--text-secondary);
+}
+
+.dark-input {
+    background-color: var(--bg-input);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.dark-input::placeholder {
+    color: #6B756F;
+}
+
+.dark-input:focus {
+    outline: none;
+    border-color: var(--green-main);
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.15);
+}
+
+.dark-btn {
+    background-color: var(--green-main);
+    color: #061009;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dark-btn:hover {
+    background-color: var(--green-dark);
+}
+
+.dark-link {
+    color: var(--green-light);
+    text-decoration: none;
+}
+
+.dark-link:hover {
+    text-decoration: underline;
+}
+
+.dark-border {
+    border: 1px solid var(--border);
+}
