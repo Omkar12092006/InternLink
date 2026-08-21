@@ -15,7 +15,7 @@
     <header class="topbar">
         <div class="container topbar-inner">
             <a class="brand" href="index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
-            <nav class="nav-links" aria-label="Main navigation"><a href="#features">Features</a><a href="browseInternships.jsp">Internships</a><a href="#about">About</a></nav>
+            <nav class="nav-links" aria-label="Main navigation"><a href="#features">Features</a><a href="browseInternships.jsp">Internships</a><a href="company/login.jsp">Company</a></nav>
             <div class="nav-actions"><a class="button button-ghost" href="student/login.jsp">Student Login</a><a class="button button-primary" href="student/register.jsp">Get Started</a></div>
         </div>
     </header>
