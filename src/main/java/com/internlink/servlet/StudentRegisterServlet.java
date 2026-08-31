@@ -20,17 +20,17 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String phone = request.getParameter("phone");
-    String course = request.getParameter("course");
+    
 
     System.out.println("Full Name: " + fullName);
     System.out.println("Email: " + email);
     System.out.println("Phone: " + phone);
-    System.out.println("Course: " + course);
+    
 
     try {
         Connection con = DBConnection.getConnection();
 
-        String sql = "INSERT INTO students(full_name,email,password,phone,course) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO students(full_name,email,password,phone) VALUES(?,?,?,?)";
 
         PreparedStatement ps = con.prepareStatement(sql);
 
@@ -38,7 +38,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
         ps.setString(2, email);
         ps.setString(3, password);
         ps.setString(4, phone);
-        ps.setString(5, course);
+        
 
         int result = ps.executeUpdate();
 
