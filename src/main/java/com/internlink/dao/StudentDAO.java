@@ -1,8 +1,12 @@
 package com.internlink.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.internlink.model.Student;
 import com.internlink.util.DBConnection;
-import java.sql.*;
 
 public class StudentDAO {
 

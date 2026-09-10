@@ -132,7 +132,7 @@
     <!-- Quick Stats -->
     <section class="bg-gradient-to-r from-green-900/20 to-emerald-900/20 py-16 px-4">
         <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8 text-center">
-            <div>
+            <div> 
                 <div class="text-4xl font-bold text-green-400">500+</div>
                 <p class="text-gray-400 mt-2">Active Internships</p>
             </div>
