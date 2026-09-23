@@ -4,4 +4,8 @@ target/
 .idea/
 *.iml
 .vscode/
+!.vscode/
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/setup-tomcat.ps1
 nbproject/private/

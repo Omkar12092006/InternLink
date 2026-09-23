@@ -9,22 +9,16 @@ import java.io.IOException;
 
 @WebServlet("/CompanyLoginServlet")
 public class CompanyLoginServlet extends HttpServlet {
-
     private final CompanyDAO companyDAO = new CompanyDAO();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        Company company = companyDAO.getCompanyByEmailAndPassword(email, password);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Company company = companyDAO.authenticate(request.getParameter("email"), request.getParameter("password"));
         if (company != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("company", company);
             session.setAttribute("companyId", company.getId());
             session.setAttribute("companyName", company.getCompanyName());
-            session.setAttribute("companyEmail", company.getEmail());
             response.sendRedirect(request.getContextPath() + "/company/dashboard.jsp");
         } else {
             request.setAttribute("errorMessage", "Invalid company email or password.");

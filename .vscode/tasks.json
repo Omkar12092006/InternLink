@@ -2,18 +2,54 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build InternLink",
+            "label": "InternLink: prepare Tomcat",
             "type": "shell",
-            "command": "C:\\Program Files\\Apache\\apache-maven-3.9.16\\bin\\mvn.cmd",
-"args": [
-    "clean",
-    "package"
-],
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "command": "powershell.exe",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}\\.vscode\\setup-tomcat.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "InternLink: start Tomcat",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}\\.vscode\\start-tomcat.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "InternLink: prepare Tomcat",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "internlink",
+                "pattern": {
+                    "regexp": "^\\s*([^ ]+):\\s*(.*)$",
+                    "file": 1,
+                    "message": 2
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".*",
+                    "endsPattern": ".*(Server startup in|Starting ProtocolHandler).*"
+                }
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
         }
     ]
 }
