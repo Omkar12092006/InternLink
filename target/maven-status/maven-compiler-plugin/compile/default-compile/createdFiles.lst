@@ -1,8 +1,0 @@
-com\internlink\dao\StudentDAO.class
-com\internlink\util\DBConnection.class
-com\internlink\servlet\StudentLoginServlet.class
-com\internlink\servlet\StudentRegisterServlet.class
-com\internlink\test\TestConnection.class
-com\internlink\model\Student.class
-com\mycompany\internlink\resources\JakartaEE11Resource.class
-com\mycompany\internlink\JakartaRestConfiguration.class
