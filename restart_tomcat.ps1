@@ -4,10 +4,11 @@ Start-Sleep -Seconds 3
 
 # Set environment variables
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-25.0.2"
-$env:CATALINA_HOME = "C:\JAVA\apache-tomcat-11.0.23"
+$env:CATALINA_HOME = "C:\Program Files\Apache Software Foundation\Tomcat 8.5"
+$env:CATALINA_BASE = "C:\Program Files\Apache Software Foundation\Tomcat 8.5"
 
 # Start Tomcat
 Write-Host "Starting Tomcat..."
-& "C:\JAVA\apache-tomcat-11.0.23\bin\startup.bat"
+& "$env:CATALINA_HOME\bin\startup.bat"
 Start-Sleep -Seconds 5
 Write-Host "Tomcat started. Application should be available at http://localhost:8080/InternLink-1.0-SNAPSHOT/"
