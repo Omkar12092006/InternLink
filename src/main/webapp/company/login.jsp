@@ -13,9 +13,9 @@
         <a class="back-link" href="../index.jsp"><span class="material-symbols-outlined">arrow_back</span>Back to home</a>
         <section class="auth-card glass">
             <div class="auth-head"><span class="eyebrow">Recruiter workspace</span><h1>Recruiter Portal</h1><p>Find the people who will move your company forward.</p></div>
-            <form class="form-stack" action="#" method="post" onsubmit="event.preventDefault()">
-                <div class="field"><label for="email">Company Email</label><div class="input-icon"><span class="material-symbols-outlined">business</span><input class="input" type="email" id="email" placeholder="talent@company.com" required></div></div>
-                <div class="field"><div class="form-foot"><label for="password">Password</label><a class="muted-link" href="#forgot">Forgot password?</a></div><div class="input-icon"><span class="material-symbols-outlined">lock</span><input class="input" type="password" id="password" placeholder="Enter your password" required><button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password"><span class="material-symbols-outlined" id="toggleIcon">visibility</span></button></div></div>
+            <form class="form-stack" action="<%= request.getContextPath() %>/CompanyLoginServlet" method="post">
+                <div class="field"><label for="email">Company Email</label><div class="input-icon"><span class="material-symbols-outlined">business</span><input class="input" type="email" id="email" name="email" placeholder="talent@company.com" required></div></div>
+                <div class="field"><div class="form-foot"><label for="password">Password</label><a class="muted-link" href="#forgot">Forgot password?</a></div><div class="input-icon"><span class="material-symbols-outlined">lock</span><input class="input" type="password" id="password" name="password" placeholder="Enter your password" required><button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password"><span class="material-symbols-outlined" id="toggleIcon">visibility</span></button></div></div>
                 <button class="button button-primary" type="submit">Enter recruiter portal <span class="material-symbols-outlined">arrow_forward</span></button>
             </form>
             <div class="auth-divider">OR</div><p class="auth-switch">New corporate partner? <a href="register.jsp">Create a company account</a></p>

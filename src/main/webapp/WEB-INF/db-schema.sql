@@ -20,6 +20,23 @@ CREATE TABLE IF NOT EXISTS students (
 );
 
 -- -----------------------------------------------------
+-- Table: companies (create if not exists)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS companies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    company_name VARCHAR(150) NOT NULL,
+    hr_name VARCHAR(100) NOT NULL,
+    industry VARCHAR(100),
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(50),
+    website VARCHAR(255),
+    location VARCHAR(150),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -----------------------------------------------------
 -- Table: internships (create if not exists)
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS internships (
@@ -38,6 +55,21 @@ CREATE TABLE IF NOT EXISTS internships (
     color VARCHAR(20) DEFAULT '#22C55E',
     posted_date DATE DEFAULT (CURRENT_DATE),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -----------------------------------------------------
+-- Table: applications (create if not exists)
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS applications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    internship_id INT NOT NULL,
+    applicant_name VARCHAR(150) NOT NULL,
+    applicant_email VARCHAR(150) NOT NULL,
+    university VARCHAR(150),
+    cover_letter TEXT,
+    status VARCHAR(50) DEFAULT 'Pending',
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (internship_id) REFERENCES internships(id) ON DELETE CASCADE
 );
 
 -- -----------------------------------------------------
