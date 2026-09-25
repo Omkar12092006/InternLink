@@ -6,7 +6,12 @@ $tomcatZip = Join-Path $PSScriptRoot "..\target\apache-tomcat-$tomcatVersion.zip
 $downloadUrl = "https://archive.apache.org/dist/tomcat/tomcat-10/v$tomcatVersion/bin/apache-tomcat-$tomcatVersion.zip"
 $warPath = Join-Path $PSScriptRoot "..\target\InternLink-1.0-SNAPSHOT.war"
 
-& "C:\Program Files\Apache\apache-maven-3.9.16\bin\mvn.cmd" package -DskipTests
+$mvnCommand = Get-Command mvn -ErrorAction SilentlyContinue
+if (-not $mvnCommand) {
+    throw "Maven was not found on PATH. Install Maven or add it to PATH before running the Tomcat setup."
+}
+
+& $mvnCommand.Source package -DskipTests
 if ($LASTEXITCODE -ne 0) {
     throw "Maven failed to build the InternLink WAR."
 }

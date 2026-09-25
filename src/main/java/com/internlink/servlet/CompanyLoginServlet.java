@@ -13,7 +13,10 @@ public class CompanyLoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Company company = companyDAO.authenticate(request.getParameter("email"), request.getParameter("password"));
+        String email = request.getParameter("email") == null ? "" : request.getParameter("email").trim();
+        String password = request.getParameter("password") == null ? "" : request.getParameter("password").trim();
+
+        Company company = companyDAO.authenticate(email, password);
         if (company != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("company", company);

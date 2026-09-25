@@ -31,10 +31,13 @@ public class CompanyDAO {
     }
 
     public Company login(String email, String password) {
-        String sql = "SELECT * FROM companies WHERE email = ? AND password = ?";
+        String normalizedEmail = email == null ? "" : email.trim();
+        String normalizedPassword = password == null ? "" : password.trim();
+
+        String sql = "SELECT * FROM companies WHERE LOWER(TRIM(email)) = LOWER(TRIM(?)) AND TRIM(password) = ?";
         try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, password);
+            ps.setString(1, normalizedEmail);
+            ps.setString(2, normalizedPassword);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? mapRow(rs) : null;
             }
@@ -76,6 +79,10 @@ public class CompanyDAO {
         }
     }
 
+    public boolean updateCompany(Company company) {
+        return update(company);
+    }
+
     public List<Company> getAll() {
         List<Company> companies = new ArrayList<>();
         String sql = "SELECT * FROM companies ORDER BY created_at DESC";
@@ -99,7 +106,12 @@ public class CompanyDAO {
         c.setLocation(rs.getString("location"));
         c.setDescription(rs.getString("description"));
         c.setPassword(rs.getString("password"));
-        c.setVerified(rs.getBoolean("verified"));
+
+        try {
+            c.setVerified(rs.getBoolean("verified"));
+        } catch (SQLException ignored) {
+            c.setVerified(false);
+        }
         return c;
     }
 }
