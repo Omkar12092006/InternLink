@@ -66,11 +66,11 @@
         <aside class="sidebar">
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company review navigation">
-                <a href="dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
-                <a href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
+                <a href="<%= request.getContextPath() %>/company/dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
+                <a href="<%= request.getContextPath() %>/company/profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/company/postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a class="active" href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
-                <a href="candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/company/candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
@@ -86,7 +86,7 @@
                     <p>Track incoming applications and decide who to shortlist or move forward.</p>
                 </div>
                 <div class="dashboard-tools">
-                    <a href="dashboard.jsp" class="button button-ghost">Back to dashboard</a>
+                    <a href="<%= request.getContextPath() %>/company/dashboard.jsp" class="button button-ghost">Back to dashboard</a>
                 </div>
             </header>
 
