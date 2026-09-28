@@ -16,7 +16,7 @@ public class StudentRegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
+        String email = StudentDAO.normalizeEmail(request.getParameter("email"));
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
         String course = request.getParameter("course");
@@ -29,13 +29,19 @@ public class StudentRegisterServlet extends HttpServlet {
             student.setPhone(phone);
             student.setCourse(course);
 
+            if (studentDAO.emailExists(email)) {
+                request.setAttribute("errorMessage", "Registration failed. This email is already registered.");
+                request.getRequestDispatcher("/student/register.jsp").forward(request, response);
+                return;
+            }
+
             boolean success = studentDAO.registerStudent(student);
 
             if (success) {
                 request.setAttribute("successMessage", "Registration successful! Please log in.");
                 request.getRequestDispatcher("/student/login.jsp").forward(request, response);
             } else {
-                request.setAttribute("errorMessage", "Registration failed. Email may already exist.");
+                request.setAttribute("errorMessage", "Registration failed. Please check your details and try again.");
                 request.getRequestDispatcher("/student/register.jsp").forward(request, response);
             }
         } catch (Exception e) {

@@ -11,6 +11,9 @@ public class Application {
     private String coverLetter;
     private String resumeLink;
     private String status;
+    private String internshipTitle;
+    private String internshipLocation;
+    private String internshipCompany;
     private LocalDateTime appliedDate;
 
     public Application() {}
@@ -38,6 +41,15 @@ public class Application {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getInternshipTitle() { return internshipTitle; }
+    public void setInternshipTitle(String internshipTitle) { this.internshipTitle = internshipTitle; }
+
+    public String getInternshipLocation() { return internshipLocation; }
+    public void setInternshipLocation(String internshipLocation) { this.internshipLocation = internshipLocation; }
+
+    public String getInternshipCompany() { return internshipCompany; }
+    public void setInternshipCompany(String internshipCompany) { this.internshipCompany = internshipCompany; }
 
     public LocalDateTime getAppliedDate() { return appliedDate; }
     public void setAppliedDate(LocalDateTime appliedDate) { this.appliedDate = appliedDate; }
