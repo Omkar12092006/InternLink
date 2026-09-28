@@ -11,24 +11,6 @@ import java.io.IOException;
 public class CompanyRegisterServlet extends HttpServlet {
     private final CompanyDAO companyDAO = new CompanyDAO();
 
-    public static String validateRegistration(
-            String companyName,
-            String hrName,
-            String industry,
-            String email,
-            String password,
-            String confirmPassword,
-            String phone,
-            String website,
-            String location,
-            String description
-    ) {
-        if (password == null || confirmPassword == null || !password.equals(confirmPassword)) {
-            return "Password and confirm password do not match.";
-        }
-        return null;
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String companyName = request.getParameter("company_name");
@@ -60,11 +42,35 @@ public class CompanyRegisterServlet extends HttpServlet {
         company.setDescription(description);
         company.setPassword(password);
         if (companyDAO.register(company)) {
-            request.setAttribute("successMessage", "Registration successful. You can now sign in.");
-            request.getRequestDispatcher("/company/login.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/company/login.jsp?registered=1");
         } else {
             request.setAttribute("errorMessage", "Registration failed. Company email may already exist.");
             request.getRequestDispatcher("/company/register.jsp").forward(request, response);
         }
+    }
+
+    public static String validateRegistration(
+            String companyName,
+            String hrName,
+            String industry,
+            String email,
+            String password,
+            String confirmPassword,
+            String phone,
+            String website,
+            String location,
+            String description) {
+        if (password == null || !password.equals(confirmPassword)) {
+            return "Password and confirm password do not match.";
+        }
+        if (isBlank(companyName) || isBlank(hrName) || isBlank(industry)
+                || isBlank(email) || isBlank(phone)) {
+            return "Please complete all required fields.";
+        }
+        return null;
+    }
+
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 }

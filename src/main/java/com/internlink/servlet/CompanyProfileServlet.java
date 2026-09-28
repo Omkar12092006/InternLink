@@ -2,6 +2,7 @@ package com.internlink.servlet;
 
 import com.internlink.dao.CompanyDAO;
 import com.internlink.model.Company;
+import com.internlink.util.RedirectUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -18,7 +19,8 @@ public class CompanyProfileServlet extends HttpServlet {
         Company company = getLoggedInCompany(request);
 
         if (company == null) {
-            response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+            response.sendRedirect(RedirectUtil.companyLoginUrl(
+                    request.getContextPath(), "company/profile.jsp"));
             return;
         }
 
@@ -32,7 +34,8 @@ public class CompanyProfileServlet extends HttpServlet {
         Company company = getLoggedInCompany(request);
 
         if (company == null) {
-            response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+            response.sendRedirect(RedirectUtil.companyLoginUrl(
+                    request.getContextPath(), "company/profile.jsp"));
             return;
         }
 
@@ -51,13 +54,10 @@ public class CompanyProfileServlet extends HttpServlet {
             session.setAttribute("company", company);
             session.setAttribute("companyName", company.getCompanyName());
             session.setAttribute("companyEmail", company.getEmail());
-            request.setAttribute("successMessage", "Profile updated successfully.");
-        } else {
-            request.setAttribute("errorMessage", "Unable to update your profile.");
         }
 
-        request.setAttribute("company", company);
-        request.getRequestDispatcher("/company/profile.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/CompanyProfileServlet?updated="
+                + (success ? "1" : "0"));
     }
 
     private Company getLoggedInCompany(HttpServletRequest request) {

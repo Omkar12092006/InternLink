@@ -19,13 +19,14 @@
                     <span style="color:#FCA5A5;font-size:14px;"><%= request.getAttribute("errorMessage") %></span>
                 </div>
             <% } %>
-            <% if (request.getAttribute("successMessage") != null) { %>
+            <% if (request.getAttribute("successMessage") != null || "1".equals(request.getParameter("registered"))) { %>
                 <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
                     <span class="material-symbols-outlined" style="color:#22C55E;font-size:20px;">check_circle</span>
-                    <span style="color:#86EFAC;font-size:14px;"><%= request.getAttribute("successMessage") %></span>
+                    <span style="color:#86EFAC;font-size:14px;"><%= request.getAttribute("successMessage") != null ? request.getAttribute("successMessage") : "Registration successful! Please log in." %></span>
                 </div>
             <% } %>
             <form class="form-stack" action="<%= request.getContextPath() %>/StudentLoginServlet" method="post">
+                <input type="hidden" name="redirect" value="<%= com.internlink.util.RedirectUtil.studentDestination(request.getParameter("redirect")) %>">
                 <div class="field"><label for="email">Email or Student ID</label><div class="input-icon"><span class="material-symbols-outlined">alternate_email</span><input class="input" type="email" name="email" id="email" placeholder="student@university.edu" required></div></div>
                 <div class="field"><div class="form-foot"><label for="password">Password</label><a class="muted-link" href="#forgot">Forgot password?</a></div><div class="input-icon"><span class="material-symbols-outlined">lock</span><input class="input" type="password" name="password" id="password" placeholder="Enter your password" required><button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password"><span class="material-symbols-outlined" id="toggleIcon">visibility</span></button></div></div>
                 <label class="form-foot"><span><input class="check" type="checkbox" name="remember"> Remember me</span></label>

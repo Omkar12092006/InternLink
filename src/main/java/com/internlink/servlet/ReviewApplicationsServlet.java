@@ -3,6 +3,7 @@ package com.internlink.servlet;
 import com.internlink.dao.ApplicationDAO;
 import com.internlink.model.Application;
 import com.internlink.model.Company;
+import com.internlink.util.RedirectUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,7 +24,8 @@ public class ReviewApplicationsServlet extends HttpServlet {
             throws ServletException, IOException {
         Company company = getLoggedInCompany(request);
         if (company == null) {
-            response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+            response.sendRedirect(RedirectUtil.companyLoginUrl(
+                    request.getContextPath(), "ReviewApplicationsServlet"));
             return;
         }
 

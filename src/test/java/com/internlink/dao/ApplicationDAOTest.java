@@ -63,6 +63,9 @@ class ApplicationDAOTest {
         List<Application> applications = applicationDAO.getApplicationsByCompanyId(createdCompany.getId());
         assertFalse(applications.isEmpty());
         assertTrue(applications.stream().anyMatch(app -> "Test Student".equals(app.getApplicantName()) && "Pending".equals(app.getStatus())));
+        assertTrue(applicationDAO.getApplicationsByStudentEmail("STUDENT-REVIEW@example.com")
+                .stream()
+                .anyMatch(app -> "Test Student".equals(app.getApplicantName())));
 
         Application application = applications.stream()
                 .filter(app -> "Test Student".equals(app.getApplicantName()))

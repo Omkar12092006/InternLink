@@ -14,8 +14,9 @@
         <section class="auth-card glass">
             <div class="auth-head"><span class="eyebrow">Recruiter workspace</span><h1>Recruiter Portal</h1><p>Find the people who will move your company forward.</p></div>
             <% if (request.getAttribute("errorMessage") != null) { %><p class="error-text"><%= request.getAttribute("errorMessage") %></p><% } %>
-            <% if (request.getAttribute("successMessage") != null) { %><p class="success-text"><%= request.getAttribute("successMessage") %></p><% } %>
+            <% if (request.getAttribute("successMessage") != null || "1".equals(request.getParameter("registered"))) { %><p class="success-text"><%= request.getAttribute("successMessage") != null ? request.getAttribute("successMessage") : "Registration successful. You can now sign in." %></p><% } %>
             <form class="form-stack" action="<%= request.getContextPath() %>/CompanyLoginServlet" method="post">
+                <input type="hidden" name="redirect" value="<%= com.internlink.util.RedirectUtil.companyDestination(request.getParameter("redirect")) %>">
                 <div class="field"><label for="email">Company Email</label><div class="input-icon"><span class="material-symbols-outlined">business</span><input class="input" type="email" id="email" name="email" placeholder="talent@company.com" required></div></div>
                 <div class="field"><div class="form-foot"><label for="password">Password</label><a class="muted-link" href="#forgot">Forgot password?</a></div><div class="input-icon"><span class="material-symbols-outlined">lock</span><input class="input" type="password" id="password" name="password" placeholder="Enter your password" required><button type="button" class="password-toggle" onclick="togglePassword()" aria-label="Show password"><span class="material-symbols-outlined" id="toggleIcon">visibility</span></button></div></div>
                 <button class="button button-primary" type="submit">Enter recruiter portal <span class="material-symbols-outlined">arrow_forward</span></button>

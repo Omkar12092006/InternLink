@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.internlink.dao.CompanyDAO" %>
 <%@ page import="com.internlink.dao.InternshipDAO" %>
 <%@ page import="com.internlink.model.Company" %>
 <%@ page import="com.internlink.model.Internship" %>
@@ -6,9 +7,14 @@
 <%
     Company company = (Company) session.getAttribute("company");
     if (company == null) {
-        response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+        response.sendRedirect(com.internlink.util.RedirectUtil.companyLoginUrl(
+                request.getContextPath(), "company/dashboard.jsp"));
         return;
     }
+    CompanyDAO companyDAO = new CompanyDAO();
+    int totalPostings = companyDAO.getPostingCount(company.getId());
+    int totalApplications = companyDAO.getApplicationCount(company.getId());
+    int pendingReviews = companyDAO.getPendingApplicationCount(company.getId());
     List<Internship> myPostings = new InternshipDAO().getByCompanyId(company.getId());
 %>
 <!DOCTYPE html>
@@ -17,7 +23,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Dashboard | InternLink</title>
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css?v=20260922">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css?v=20260924">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,14 +48,14 @@
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company navigation">
                 <a class="active" href="dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
-                <a href="candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
-                <a href="<%= request.getContextPath() %>/index.jsp"><span class="material-symbols-outlined">logout</span>Logout</a>
+                <a href="<%= request.getContextPath() %>/LogoutServlet"><span class="material-symbols-outlined">logout</span>Logout</a>
             </nav>
         </aside>
 
@@ -62,8 +68,30 @@
                 </div>
                 <div class="dashboard-tools">
                     <a href="postInternship.jsp" class="button button-primary">Post a new internship</a>
+                    <span class="status-box <%= company.isVerified() ? "success" : "error" %>">
+                        <span class="material-symbols-outlined"><%= company.isVerified() ? "verified" : "pending" %></span>
+                        <%= company.isVerified() ? "Verified company" : "Pending verification" %>
+                    </span>
                 </div>
             </header>
+
+            <section class="metrics" aria-label="Company metrics">
+                <article class="metric-card glass">
+                    <span class="material-symbols-outlined">work</span>
+                    <span class="metric-label">Total postings</span>
+                    <div class="metric-value"><%= totalPostings %></div>
+                </article>
+                <article class="metric-card glass">
+                    <span class="material-symbols-outlined">group</span>
+                    <span class="metric-label">Total applications</span>
+                    <div class="metric-value"><%= totalApplications %></div>
+                </article>
+                <article class="metric-card glass">
+                    <span class="material-symbols-outlined">pending_actions</span>
+                    <span class="metric-label">Pending reviews</span>
+                    <div class="metric-value"><%= pendingReviews %></div>
+                </article>
+            </section>
 
             <section class="panel glass profile-panel" style="padding: 2rem;">
                 <div class="status-box info">

@@ -46,7 +46,7 @@ public class ApplicationDAO {
 
     public List<Application> getApplicationsByCompanyId(int companyId) {
         List<Application> applications = new ArrayList<>();
-        String sql = "SELECT a.id, a.internship_id, a.applicant_name, a.applicant_email, a.university, a.cover_letter, a.status, a.applied_at, " +
+        String sql = "SELECT a.id, a.internship_id, a.applicant_name, a.applicant_email, a.university, a.cover_letter, a.status, a.applied_date AS applied_at, " +
                      "i.title AS internship_title, i.location AS internship_location, i.company AS internship_company " +
                      "FROM applications a JOIN internships i ON a.internship_id = i.id " +
                      "WHERE i.company_id = ? ORDER BY a.id DESC";
@@ -60,6 +60,26 @@ public class ApplicationDAO {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return applications;
+    }
+
+    public List<Application> getApplicationsByStudentEmail(String email) {
+        List<Application> applications = new ArrayList<>();
+        String sql = "SELECT a.id, a.internship_id, a.applicant_name, a.applicant_email, a.university, a.cover_letter, a.status, a.applied_date AS applied_at, " +
+                     "i.title AS internship_title, i.location AS internship_location, i.company AS internship_company " +
+                     "FROM applications a JOIN internships i ON a.internship_id = i.id " +
+                     "WHERE LOWER(a.applicant_email) = LOWER(?) ORDER BY a.applied_date DESC, a.id DESC";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    applications.add(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return applications;

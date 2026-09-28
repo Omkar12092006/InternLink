@@ -2,6 +2,7 @@ package com.internlink.servlet;
 
 import com.internlink.dao.ApplicationDAO;
 import com.internlink.model.Student;
+import com.internlink.util.RedirectUtil;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,17 +29,31 @@ public class ApplicationServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         Student student = (session != null) ? (Student) session.getAttribute("student") : null;
 
+        int internshipId;
+        try {
+            internshipId = Integer.parseInt(request.getParameter("internshipId"));
+            if (internshipId <= 0) {
+                throw new NumberFormatException("Internship ID must be positive.");
+            }
+        } catch (NumberFormatException e) {
+            response.setStatus(400);
+            result.put("success", false);
+            result.put("message", "Invalid internship ID.");
+            out.print(gson.toJson(result));
+            return;
+        }
+
         if (student == null) {
             response.setStatus(401);
             result.put("success", false);
-            result.put("redirect", request.getContextPath() + "/student/login.jsp");
+            result.put("redirect", RedirectUtil.studentLoginUrl(
+                    request.getContextPath(), "applyInternship.jsp?id=" + internshipId));
             result.put("message", "Please log in to apply for internships.");
             out.print(gson.toJson(result));
             return;
         }
 
         try {
-            int internshipId = Integer.parseInt(request.getParameter("internshipId"));
             String email = student.getEmail();
             String name = request.getParameter("name");
             if (name == null || name.trim().isEmpty()) name = student.getFullName();
@@ -61,10 +76,6 @@ public class ApplicationServlet extends HttpServlet {
                     result.put("message", "Failed to submit application. You may have already applied.");
                 }
             }
-        } catch (NumberFormatException e) {
-            response.setStatus(400);
-            result.put("success", false);
-            result.put("message", "Invalid internship ID.");
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(500);

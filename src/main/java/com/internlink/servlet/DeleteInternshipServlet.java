@@ -3,6 +3,7 @@ package com.internlink.servlet;
 import com.internlink.dao.InternshipDAO;
 import com.internlink.model.Company;
 import com.internlink.model.Internship;
+import com.internlink.util.RedirectUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,13 +23,14 @@ public class DeleteInternshipServlet extends HttpServlet {
             throws ServletException, IOException {
         Company company = getLoggedInCompany(request);
         if (company == null) {
-            response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+            response.sendRedirect(RedirectUtil.companyLoginUrl(
+                    request.getContextPath(), "company/postings.jsp"));
             return;
         }
 
         String idParam = request.getParameter("id");
         if (idParam == null || idParam.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 
@@ -36,13 +38,13 @@ public class DeleteInternshipServlet extends HttpServlet {
         try {
             internshipId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 
         Internship internship = internshipDAO.getInternshipById(internshipId);
         if (internship == null || internship.getCompanyId() != company.getId()) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 

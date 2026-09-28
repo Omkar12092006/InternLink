@@ -38,8 +38,7 @@ public class StudentRegisterServlet extends HttpServlet {
             boolean success = studentDAO.registerStudent(student);
 
             if (success) {
-                request.setAttribute("successMessage", "Registration successful! Please log in.");
-                request.getRequestDispatcher("/student/login.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/student/login.jsp?registered=1");
             } else {
                 request.setAttribute("errorMessage", "Registration failed. Please check your details and try again.");
                 request.getRequestDispatcher("/student/register.jsp").forward(request, response);

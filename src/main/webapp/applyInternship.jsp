@@ -74,7 +74,7 @@
                     <a href="<%= contextPath %>/student/dashboard.jsp" class="text-gray-300 hover:text-green-400 transition">Dashboard</a>
                     <span class="text-green-400 text-sm font-medium">Hi, <%= sessionStudent.getFullName().split(" ")[0] %></span>
                 <% } else { %>
-                    <a href="<%= contextPath %>/student/login.jsp" class="text-gray-300 hover:text-green-400 transition">Login</a>
+                    <a href="<%= com.internlink.util.RedirectUtil.studentLoginUrl(contextPath, "applyInternship.jsp?id=" + internship.getId()) %>" class="text-gray-300 hover:text-green-400 transition">Login</a>
                     <a href="<%= contextPath %>/student/register.jsp" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Sign Up</a>
                 <% } %>
             </div>

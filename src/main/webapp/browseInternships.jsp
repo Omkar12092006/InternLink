@@ -54,9 +54,9 @@
                 <% if (isLoggedIn) { %>
                     <a href="<%= contextPath %>/student/dashboard.jsp" class="text-gray-300 hover:text-green-400 transition">Dashboard</a>
                     <span class="text-green-400 text-sm font-medium">Hi, <%= sessionStudent.getFullName().split(" ")[0] %></span>
-                    <a href="<%= contextPath %>/student/login.jsp" class="text-gray-300 hover:text-green-400 transition">Logout</a>
+                    <a href="<%= contextPath %>/LogoutServlet" class="text-gray-300 hover:text-green-400 transition">Logout</a>
                 <% } else { %>
-                    <a href="<%= contextPath %>/student/login.jsp" class="text-gray-300 hover:text-green-400 transition">Login</a>
+                    <a href="<%= com.internlink.util.RedirectUtil.studentLoginUrl(contextPath, "browseInternships.jsp") %>" class="text-gray-300 hover:text-green-400 transition">Login</a>
                     <a href="<%= contextPath %>/student/register.jsp" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">Sign Up</a>
                 <% } %>
             </div>
@@ -230,6 +230,8 @@
         let searchTimeout = null;
 
         document.addEventListener('DOMContentLoaded', function() {
+            const keyword = new URLSearchParams(window.location.search).get('keyword');
+            if (keyword) document.getElementById('searchInput').value = keyword;
             loadInternships();
         });
 

@@ -7,7 +7,8 @@
 <%
     Company company = (Company) session.getAttribute("company");
     if (company == null) {
-        response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+        response.sendRedirect(com.internlink.util.RedirectUtil.companyLoginUrl(
+                request.getContextPath(), "ReviewApplicationsServlet"));
         return;
     }
 
@@ -67,14 +68,14 @@
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company review navigation">
                 <a href="<%= request.getContextPath() %>/company/dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="<%= request.getContextPath() %>/company/profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a href="<%= request.getContextPath() %>/company/postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a class="active" href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
-                <a href="<%= request.getContextPath() %>/company/candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
-                <a href="<%= request.getContextPath() %>/index.jsp"><span class="material-symbols-outlined">logout</span>Logout</a>
+                <a href="<%= request.getContextPath() %>/LogoutServlet"><span class="material-symbols-outlined">logout</span>Logout</a>
             </nav>
         </aside>
 

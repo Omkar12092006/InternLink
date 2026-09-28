@@ -3,11 +3,14 @@
 <%
     Company company = (Company) session.getAttribute("company");
     if (company == null) {
-        response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+        response.sendRedirect(com.internlink.util.RedirectUtil.companyLoginUrl(
+                request.getContextPath(), "company/profile.jsp"));
         return;
     }
-    String successMessage = (String) request.getAttribute("successMessage");
-    String errorMessage = (String) request.getAttribute("errorMessage");
+    String successMessage = "1".equals(request.getParameter("updated"))
+            ? "Profile updated successfully." : (String) request.getAttribute("successMessage");
+    String errorMessage = "0".equals(request.getParameter("updated"))
+            ? "Unable to update your profile." : (String) request.getAttribute("errorMessage");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,14 +29,14 @@
         <aside class="sidebar">
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company profile navigation">
-                <a href="dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a class="active" href="profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/company/dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
+                <a class="active" href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
-                <a href="candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
-                <a href="<%= request.getContextPath() %>/index.jsp"><span class="material-symbols-outlined">logout</span>Logout</a>
+                <a href="<%= request.getContextPath() %>/LogoutServlet"><span class="material-symbols-outlined">logout</span>Logout</a>
             </nav>
         </aside>
 
@@ -45,7 +48,7 @@
                     <p>Review and update your company information for candidate outreach.</p>
                 </div>
                 <div class="dashboard-tools">
-                    <a href="dashboard.jsp" class="button button-ghost">Back to dashboard</a>
+                    <a href="<%= request.getContextPath() %>/company/dashboard.jsp" class="button button-ghost">Back to dashboard</a>
                 </div>
             </header>
 

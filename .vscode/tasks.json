@@ -43,7 +43,7 @@
                 "background": {
                     "activeOnStart": true,
                     "beginsPattern": ".*",
-                    "endsPattern": ".*(Server startup in|Starting ProtocolHandler).*"
+                    "endsPattern": ".*(Server startup in|Starting ProtocolHandler|existing Tomcat process).*"
                 }
             },
             "presentation": {

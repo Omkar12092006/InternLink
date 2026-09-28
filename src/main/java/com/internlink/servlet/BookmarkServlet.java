@@ -2,6 +2,7 @@ package com.internlink.servlet;
 
 import com.internlink.dao.BookmarkDAO;
 import com.internlink.model.Student;
+import com.internlink.util.RedirectUtil;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,7 +32,8 @@ public class BookmarkServlet extends HttpServlet {
         if (student == null) {
             response.setStatus(401);
             result.put("success", false);
-            result.put("redirect", request.getContextPath() + "/student/login.jsp");
+            result.put("redirect", RedirectUtil.studentLoginUrl(
+                    request.getContextPath(), "browseInternships.jsp"));
             result.put("message", "Please log in to bookmark internships.");
             out.print(gson.toJson(result));
             return;

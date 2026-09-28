@@ -115,6 +115,24 @@ public class InternshipDAO {
         return list;
     }
 
+    public List<Internship> getBookmarkedByStudentId(int studentId) {
+        List<Internship> list = new ArrayList<>();
+        String sql = "SELECT i.* FROM bookmarks b JOIN internships i ON i.id = b.internship_id " +
+                     "WHERE b.student_id = ? ORDER BY b.created_at DESC";
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, studentId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Internship> searchInternships(String keyword, List<String> categories,
             List<String> locations, String duration, String stipendType, int offset, int limit) {
         List<Internship> list = new ArrayList<>();

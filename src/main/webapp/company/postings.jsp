@@ -6,7 +6,8 @@
 <%
     Company company = (Company) session.getAttribute("company");
     if (company == null) {
-        response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+        response.sendRedirect(com.internlink.util.RedirectUtil.companyLoginUrl(
+                request.getContextPath(), "company/postings.jsp"));
         return;
     }
     List<Internship> postings = new InternshipDAO().getByCompanyId(company.getId());
@@ -42,15 +43,15 @@
         <aside class="sidebar">
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company postings navigation">
-                <a href="dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/company/dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
+                <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a class="active" href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
-                <a href="candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
-                <a href="<%= request.getContextPath() %>/index.jsp"><span class="material-symbols-outlined">logout</span>Logout</a>
+                <a href="<%= request.getContextPath() %>/LogoutServlet"><span class="material-symbols-outlined">logout</span>Logout</a>
             </nav>
         </aside>
 
@@ -63,7 +64,7 @@
                 </div>
                 <div class="dashboard-tools">
                     <a href="postInternship.jsp" class="button button-primary">Post internship</a>
-                    <a href="dashboard.jsp" class="button button-ghost">Back to dashboard</a>
+                    <a href="<%= request.getContextPath() %>/company/dashboard.jsp" class="button button-ghost">Back to dashboard</a>
                 </div>
             </header>
 
@@ -74,6 +75,9 @@
                     <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Internship listing updated successfully.</div>
                 <% } else if ("deleted".equals(successMessage)) { %>
                     <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Internship listing deleted successfully.</div>
+                <% } %>
+                <% if ("error".equals(successMessage)) { %>
+                    <div class="status-box error"><span class="material-symbols-outlined">error</span>Unable to complete the internship listing change.</div>
                 <% } %>
 
                 <h2>Current opportunities</h2>

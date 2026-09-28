@@ -3,6 +3,7 @@ package com.internlink.servlet;
 import com.internlink.dao.InternshipDAO;
 import com.internlink.model.Company;
 import com.internlink.model.Internship;
+import com.internlink.util.RedirectUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,15 +22,16 @@ public class EditInternshipServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String idParam = request.getParameter("id");
         Company company = getLoggedInCompany(request);
         if (company == null) {
-            response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+            response.sendRedirect(RedirectUtil.companyLoginUrl(
+                    request.getContextPath(), "company/postInternship.jsp?id=" + idParam));
             return;
         }
 
-        String idParam = request.getParameter("id");
         if (idParam == null || idParam.trim().isEmpty()) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 
@@ -37,13 +39,13 @@ public class EditInternshipServlet extends HttpServlet {
         try {
             internshipId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 
         Internship existing = internshipDAO.getInternshipById(internshipId);
         if (existing == null || existing.getCompanyId() != company.getId()) {
-            response.sendRedirect(request.getContextPath() + "/company/postings.jsp");
+            response.sendRedirect(request.getContextPath() + "/company/postings.jsp?success=error");
             return;
         }
 

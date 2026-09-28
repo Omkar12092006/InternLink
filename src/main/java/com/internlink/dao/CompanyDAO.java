@@ -83,6 +83,18 @@ public class CompanyDAO {
         return update(company);
     }
 
+    public int getPostingCount(int companyId) {
+        return getCount("SELECT COUNT(*) FROM internships WHERE company_id = ?", companyId);
+    }
+
+    public int getApplicationCount(int companyId) {
+        return getCount("SELECT COUNT(*) FROM applications a JOIN internships i ON i.id = a.internship_id WHERE i.company_id = ?", companyId);
+    }
+
+    public int getPendingApplicationCount(int companyId) {
+        return getCount("SELECT COUNT(*) FROM applications a JOIN internships i ON i.id = a.internship_id WHERE i.company_id = ? AND LOWER(a.status) = 'pending'", companyId);
+    }
+
     public List<Company> getAll() {
         List<Company> companies = new ArrayList<>();
         String sql = "SELECT * FROM companies ORDER BY created_at DESC";
@@ -92,6 +104,18 @@ public class CompanyDAO {
             e.printStackTrace();
         }
         return companies;
+    }
+
+    private int getCount(String sql, int companyId) {
+        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, companyId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     private Company mapRow(ResultSet rs) throws SQLException {

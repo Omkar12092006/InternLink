@@ -3,14 +3,24 @@
 <%@ page import="com.internlink.model.Company" %>
 <%@ page import="com.internlink.model.Internship" %>
 <%
+    String idParam = request.getParameter("id");
     Company company = (Company) session.getAttribute("company");
     if (company == null) {
-        response.sendRedirect(request.getContextPath() + "/company/login.jsp");
+        String destination = "company/postInternship.jsp";
+        try {
+            int requestedId = Integer.parseInt(idParam);
+            if (requestedId > 0) {
+                destination += "?id=" + requestedId;
+            }
+        } catch (NumberFormatException ignored) {
+            // A missing or invalid id opens the new-post form after login.
+        }
+        response.sendRedirect(com.internlink.util.RedirectUtil.companyLoginUrl(
+                request.getContextPath(), destination));
         return;
     }
 
     String errorMessage = (String) request.getAttribute("errorMessage");
-    String idParam = request.getParameter("id");
     Internship internship = null;
     boolean editing = idParam != null && !idParam.trim().isEmpty();
     if (editing) {
@@ -43,14 +53,14 @@
         <aside class="sidebar">
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Company navigation">
-                <a href="dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="profile.jsp"><span class="material-symbols-outlined">person</span>Company Profile</a>
+                <a href="<%= request.getContextPath() %>/company/dashboard.jsp"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
+                <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a class="active" href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
-                <a href="candidates.jsp"><span class="material-symbols-outlined">group</span>Candidates</a>
+                <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
             <nav class="side-nav">
-                <a href="<%= request.getContextPath() %>/index.jsp"><span class="material-symbols-outlined">logout</span>Logout</a>
+                <a href="<%= request.getContextPath() %>/LogoutServlet"><span class="material-symbols-outlined">logout</span>Logout</a>
             </nav>
         </aside>
 

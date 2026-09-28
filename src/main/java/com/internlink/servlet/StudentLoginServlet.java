@@ -2,6 +2,7 @@ package com.internlink.servlet;
 
 import com.internlink.dao.StudentDAO;
 import com.internlink.model.Student;
+import com.internlink.util.RedirectUtil;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,12 +23,17 @@ public class StudentLoginServlet extends HttpServlet {
             Student student = studentDAO.getStudentByEmailAndPassword(email, password);
 
             if (student != null) {
+                HttpSession existingSession = request.getSession(false);
+                if (existingSession != null) {
+                    existingSession.invalidate();
+                }
                 HttpSession session = request.getSession(true);
                 session.setAttribute("student", student);
                 session.setAttribute("studentId", student.getId());
                 session.setAttribute("studentName", student.getFullName());
                 session.setAttribute("studentEmail", student.getEmail());
-                response.sendRedirect(request.getContextPath() + "/student/dashboard.jsp");
+                response.sendRedirect(RedirectUtil.studentAfterLogin(
+                        request.getContextPath(), request.getParameter("redirect")));
             } else {
                 request.setAttribute("errorMessage", "Invalid Email or Password");
                 request.getRequestDispatcher("/student/login.jsp").forward(request, response);
