@@ -67,7 +67,7 @@
         <header class="dashboard-top">
             <div>
                 <span class="eyebrow">Administration</span>
-                <h1>Manage students.</h1>
+                <h1>Admin: Manage Students &amp; Companies</h1>
                 <p>Review and update student accounts.</p>
             </div>
         </header>
