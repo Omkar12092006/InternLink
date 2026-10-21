@@ -56,35 +56,70 @@ public class AdminDAO {
         } catch (SQLException e) { e.printStackTrace(); return null; }
     }
 
-    public List<Student> getAllStudents() {
+    public List<Student> getAllStudents() throws SQLException {
         List<Student> students = new ArrayList<>();
-        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT * FROM students ORDER BY created_at DESC"); ResultSet rs = ps.executeQuery()) {
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection;
+             PreparedStatement ps = con.prepareStatement("SELECT id, full_name, email, phone, course FROM students ORDER BY created_at DESC");
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Student s = new Student();
                 s.setId(rs.getInt("id")); s.setFullName(rs.getString("full_name"));
                 s.setEmail(rs.getString("email")); s.setPhone(rs.getString("phone"));
                 s.setCourse(rs.getString("course")); students.add(s);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        }
         return students;
     }
 
-    public List<Company> getAllCompanies() {
+    public List<Company> getAllCompanies() throws SQLException {
         return new CompanyDAO().getAll();
     }
 
-    public boolean verifyCompany(int companyId) {
-        return executeCompanyUpdate("UPDATE companies SET verified=1 WHERE id=?", companyId);
+    public boolean updateStudent(Student student) throws SQLException {
+        String sql = "UPDATE students SET full_name=?, email=?, phone=?, course=? WHERE id=?";
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection; PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, student.getFullName());
+            ps.setString(2, student.getEmail());
+            ps.setString(3, student.getPhone());
+            ps.setString(4, student.getCourse());
+            ps.setInt(5, student.getId());
+            return ps.executeUpdate() > 0;
+        }
     }
 
-    public boolean deleteCompany(int companyId) {
-        return executeCompanyUpdate("DELETE FROM companies WHERE id=?", companyId);
+    public boolean deleteStudent(int studentId) throws SQLException {
+        return executeAccountUpdate("DELETE FROM students WHERE id=?", studentId);
     }
 
-    private boolean executeCompanyUpdate(String sql, int companyId) {
-        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, companyId); return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); return false; }
+    public boolean verifyCompany(int companyId) throws SQLException {
+        return executeAccountUpdate("UPDATE companies SET verified=1 WHERE id=?", companyId);
+    }
+
+    public boolean rejectCompany(int companyId) throws SQLException {
+        return executeAccountUpdate("UPDATE companies SET verified=0 WHERE id=?", companyId);
+    }
+
+    public boolean deleteCompany(int companyId) throws SQLException {
+        return executeAccountUpdate("DELETE FROM companies WHERE id=?", companyId);
+    }
+
+    private boolean executeAccountUpdate(String sql, int accountId) throws SQLException {
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection; PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            return ps.executeUpdate() > 0;
+        }
     }
 
     private Admin mapAdmin(ResultSet rs) throws SQLException {

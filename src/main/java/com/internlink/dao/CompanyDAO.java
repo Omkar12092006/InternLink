@@ -95,13 +95,15 @@ public class CompanyDAO {
         return getCount("SELECT COUNT(*) FROM applications a JOIN internships i ON i.id = a.internship_id WHERE i.company_id = ? AND LOWER(a.status) = 'pending'", companyId);
     }
 
-    public List<Company> getAll() {
+    public List<Company> getAll() throws SQLException {
         List<Company> companies = new ArrayList<>();
         String sql = "SELECT * FROM companies ORDER BY created_at DESC";
-        try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection; PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) companies.add(mapRow(rs));
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return companies;
     }

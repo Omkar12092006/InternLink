@@ -33,6 +33,12 @@
                 <a class="active" href="<%= request.getContextPath() %>/AdminDashboardServlet">
                     <span class="material-symbols-outlined">space_dashboard</span>Overview
                 </a>
+                <a href="<%= request.getContextPath() %>/ManageStudentsServlet">
+                    <span class="material-symbols-outlined">school</span>Manage students
+                </a>
+                <a href="<%= request.getContextPath() %>/ManageCompaniesServlet">
+                    <span class="material-symbols-outlined">business</span>Manage companies
+                </a>
                 <a href="<%= request.getContextPath() %>/browseInternships.jsp">
                     <span class="material-symbols-outlined">work</span>Browse internships
                 </a>
