@@ -1,0 +1,14 @@
+com\internlink\util\DBConnection.class
+com\internlink\servlet\StudentLoginServlet.class
+com\internlink\servlet\StudentRegisterServlet.class
+com\internlink\test\TestConnection.class
+com\internlink\model\Student.class
+com\internlink\model\Internship.class
+com\mycompany\internlink\JakartaRestConfiguration.class
+com\internlink\dao\StudentDAO.class
+com\internlink\servlet\ApplyServlet.class
+com\internlink\dao\ApplicationDAO.class
+com\internlink\model\Application.class
+com\internlink\servlet\InternshipServlet.class
+com\internlink\dao\InternshipDAO.class
+com\mycompany\internlink\resources\JakartaEE11Resource.class
