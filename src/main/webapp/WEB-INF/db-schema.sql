@@ -86,6 +86,20 @@ CREATE TABLE IF NOT EXISTS bookmarks (
     UNIQUE KEY unique_bookmark (student_id, internship_id)
 );
 
+INSERT IGNORE INTO companies
+    (company_name, hr_name, industry, email, phone, website, location, description, password, verified)
+VALUES
+    ('NovaTech Solutions', 'Aisha Mehta', 'Technology', 'talent@novatech.example', '+91 98765 43210', 'https://novatech.example', 'Bengaluru, India', 'A product engineering company building cloud tools for growing businesses.', 'demo-company-2026', 1),
+    ('GreenGrid Energy', 'Daniel Brooks', 'Manufacturing', 'careers@greengrid.example', '+1 415 555 0182', 'https://greengrid.example', 'Austin, United States', 'A clean-energy company developing smarter storage and sustainable infrastructure.', 'demo-company-2026', 1),
+    ('HealthBridge Analytics', 'Priya Shah', 'Healthcare', 'people@healthbridge.example', '+44 20 7946 0958', 'https://healthbridge.example', 'London, United Kingdom', 'A healthcare analytics team helping providers make better decisions with data.', 'demo-company-2026', 0),
+    ('Pine & Pixel Studio', 'Maya Rodriguez', 'Technology', 'hello@pinepixel.example', '+1 206 555 0147', 'https://pinepixel.example', 'Seattle, United States', 'A digital product studio designing accessible experiences for education and public-service teams.', 'demo-company-2026', 1),
+    ('Harborline Finance', 'Ethan Wilson', 'Finance', 'earlycareers@harborline.example', '+1 312 555 0164', 'https://harborline.example', 'Chicago, United States', 'A fintech company building transparent tools for budgeting, payments, and small-business finance.', 'demo-company-2026', 1),
+    ('LearnLoop Education', 'Kavya Nair', 'Education', 'talent@learnloop.example', '+91 80456 78120', 'https://learnloop.example', 'Pune, India', 'An education platform helping learners build practical skills through mentor-led programs.', 'demo-company-2026', 1),
+    ('UrbanRoot Foods', 'Oliver Chen', 'Manufacturing', 'people@urbanroot.example', '+65 6555 0138', 'https://urbanroot.example', 'Singapore', 'A food innovation company developing sustainable urban farming and low-waste supply chains.', 'demo-company-2026', 0),
+    ('ClearPath Logistics', 'Sofia Martinez', 'Technology', 'internships@clearpathlogistics.example', '+34 91 555 0186', 'https://clearpathlogistics.example', 'Madrid, Spain', 'A logistics technology company helping retailers coordinate faster and more efficient deliveries.', 'demo-company-2026', 1),
+    ('Northstar Bioworks', 'Lucas Bennett', 'Healthcare', 'careers@northstarbio.example', '+1 617 555 0129', 'https://northstarbio.example', 'Boston, United States', 'A life-sciences research company developing data-informed tools for clinical teams.', 'demo-company-2026', 0),
+    ('CivicCloud Labs', 'Rohan Kapoor', 'Technology', 'join@civiccloud.example', '+91 11456 78231', 'https://civiccloud.example', 'New Delhi, India', 'A civic technology team creating secure digital services for local communities.', 'demo-company-2026', 1);
+
 INSERT INTO internships
     (title, company, category, location, duration, description, skills, paid, stipend, applicants, emoji, color, posted_date)
 VALUES

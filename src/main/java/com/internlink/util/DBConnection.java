@@ -7,7 +7,7 @@ public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/internlink";
     private static final String USER = "root";
-    private static final String PASSWORD = "arnavmysql"; // Put your MySQL password here if you have one
+    private static final String PASSWORD = "omkar"; // Local MySQL password
 
     public static Connection getConnection() {
         Connection con = null;

@@ -17,6 +17,37 @@ public class AdminDAO {
         } catch (SQLException e) { e.printStackTrace(); return null; }
     }
 
+    public int getStudentCount() throws SQLException {
+        return getCount("SELECT COUNT(*) FROM students");
+    }
+
+    public int getCompanyCount() throws SQLException {
+        return getCount("SELECT COUNT(*) FROM companies");
+    }
+
+    public int getInternshipCount() throws SQLException {
+        return getCount("SELECT COUNT(*) FROM internships");
+    }
+
+    public int getApplicationCount() throws SQLException {
+        return getCount("SELECT COUNT(*) FROM applications");
+    }
+
+    private int getCount(String sql) throws SQLException {
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection;
+             PreparedStatement statement = con.prepareStatement(sql);
+             ResultSet result = statement.executeQuery()) {
+            if (!result.next()) {
+                throw new SQLException("The dashboard count query returned no result.");
+            }
+            return result.getInt(1);
+        }
+    }
+
     public Admin getById(int id) {
         String sql = "SELECT * FROM admins WHERE id=?";
         try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
