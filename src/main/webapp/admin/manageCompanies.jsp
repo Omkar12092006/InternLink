@@ -65,7 +65,7 @@
         <header class="dashboard-top">
             <div>
                 <span class="eyebrow">Administration</span>
-                <h1>Admin: Manage Students &amp; Companies</h1>
+                <h1>Manage companies.</h1>
                 <p>Review company accounts and their verification status.</p>
             </div>
         </header>
