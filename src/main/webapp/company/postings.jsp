@@ -70,9 +70,9 @@
 
             <section class="panel glass" style="padding: 2rem;">
                 <% if ("created".equals(successMessage)) { %>
-                    <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Internship listing created successfully.</div>
+                    <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Listing submitted and awaiting admin approval.</div>
                 <% } else if ("updated".equals(successMessage)) { %>
-                    <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Internship listing updated successfully.</div>
+                    <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Listing updated and submitted for admin approval.</div>
                 <% } else if ("deleted".equals(successMessage)) { %>
                     <div class="status-box success"><span class="material-symbols-outlined">check_circle</span>Internship listing deleted successfully.</div>
                 <% } %>
@@ -94,6 +94,7 @@
                                     <div>
                                         <strong><%= internship.getTitle() %></strong>
                                         <p style="color: var(--muted); margin: 0.45rem 0 0;"> <%= internship.getLocation() %> • <%= internship.getDuration() %> • <%= internship.isPaid() ? "Paid" : "Unpaid" %> </p>
+                                        <p style="margin: 0.5rem 0 0;"><span class="badge <%= internship.isApproved() ? "badge-green" : "badge-amber" %>"><%= internship.isApproved() ? "Approved" : "Pending admin approval" %></span></p>
                                         <p style="color: var(--muted); margin: 0.5rem 0 0;"><%= internship.getDescription() == null ? "" : internship.getDescription().substring(0, Math.min(140, internship.getDescription().length())) %></p>
                                     </div>
                                     <div style="display:flex; gap:0.75rem; align-items:center;">
