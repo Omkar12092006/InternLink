@@ -23,6 +23,7 @@ public class StudentLoginServlet extends HttpServlet {
             Student student = studentDAO.getStudentByEmailAndPassword(email, password);
 
             if (student != null) {
+                student.setPassword(null);
                 HttpSession existingSession = request.getSession(false);
                 if (existingSession != null) {
                     existingSession.invalidate();

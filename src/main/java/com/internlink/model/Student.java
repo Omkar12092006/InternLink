@@ -7,6 +7,7 @@ public class Student {
     private String password;
     private String phone;
     private String course;
+    private String resumeFile;
 
     public Student() {}
 
@@ -35,4 +36,7 @@ public class Student {
 
     public String getCourse() { return course; }
     public void setCourse(String course) { this.course = course; }
+
+    public String getResumeFile() { return resumeFile; }
+    public void setResumeFile(String resumeFile) { this.resumeFile = resumeFile; }
 }

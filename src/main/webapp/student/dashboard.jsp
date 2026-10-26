@@ -5,6 +5,13 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.Collections" %>
 <%@ page import="java.util.List" %>
+<%!
+    private String escapeHtml(String value) {
+        if (value == null) return "";
+        return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+                .replace("\"", "&quot;").replace("'", "&#39;");
+    }
+%>
 <%
     if (!Boolean.TRUE.equals(request.getAttribute("dashboardReady"))) {
         response.sendRedirect(request.getContextPath() + "/StudentDashboardServlet");
@@ -19,6 +26,7 @@
     long offers = (Long) request.getAttribute("offers");
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
     String savedMessage = request.getParameter("saved");
+    String dashboardError = (String) request.getAttribute("dashboardError");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,8 +46,9 @@
             <a class="brand" href="<%= request.getContextPath() %>/index.jsp"><span class="brand-mark material-symbols-outlined">trending_up</span><span>InternLink</span></a>
             <nav class="side-nav" aria-label="Student dashboard navigation">
                 <a class="active" href="#top"><span class="material-symbols-outlined">space_dashboard</span>Dashboard</a>
-                <a href="#profile"><span class="material-symbols-outlined">person</span>My Profile</a>
-                <a href="#applications"><span class="material-symbols-outlined">work_history</span>Applications</a>
+                <a href="<%= request.getContextPath() %>/StudentProfileServlet"><span class="material-symbols-outlined">person</span>My Profile</a>
+                <a href="<%= request.getContextPath() %>/MyApplicationsServlet"><span class="material-symbols-outlined">work_history</span>Applications</a>
+                <a href="<%= request.getContextPath() %>/StudentInterviewsServlet"><span class="material-symbols-outlined">calendar_month</span>Interviews</a>
                 <a href="#saved"><span class="material-symbols-outlined">bookmark</span>Saved Jobs</a>
                 <a href="<%= request.getContextPath() %>/browseInternships.jsp"><span class="material-symbols-outlined">search</span>Find Internships</a>
             </nav>
@@ -53,17 +62,26 @@
             <header class="dashboard-top">
                 <div>
                     <span class="eyebrow">Student workspace</span>
-                    <h1>Welcome, <%= student.getFullName() %>.</h1>
+                    <h1>Welcome, <%= escapeHtml(student.getFullName()) %>.</h1>
                     <p>Track your real applications and saved internship opportunities.</p>
                 </div>
-                <form class="dashboard-tools" action="<%= request.getContextPath() %>/browseInternships.jsp" method="get">
-                    <label class="search">
-                        <span class="material-symbols-outlined">search</span>
-                        <input type="search" name="keyword" placeholder="Search internships" aria-label="Search internships">
-                    </label>
-                    <button class="button button-primary" type="submit">Search</button>
-                </form>
+                <div class="dashboard-tools">
+                    <form class="search" action="<%= request.getContextPath() %>/browseInternships.jsp" method="get">
+                        <label>
+                            <span class="material-symbols-outlined">search</span>
+                            <input type="search" name="keyword" placeholder="Search internships" aria-label="Search internships">
+                        </label>
+                        <button class="button button-primary" type="submit">Search</button>
+                    </form>
+                    <a class="button button-ghost" href="<%= request.getContextPath() %>/StudentProfileServlet">
+                        <span class="material-symbols-outlined">upload_file</span>Edit profile &amp; upload resume
+                    </a>
+                </div>
             </header>
+
+            <% if (dashboardError != null) { %>
+                <div class="status-box error" role="alert"><%= escapeHtml(dashboardError) %></div>
+            <% } %>
 
             <section class="metrics" aria-label="Your application metrics">
                 <article class="metric-card glass">
@@ -95,13 +113,13 @@
             <section class="panel glass" id="profile" style="padding:2rem;margin-top:2rem;">
                 <div class="panel-head">
                     <h2>My profile</h2>
-                    <span class="eyebrow">Student account</span>
+                    <a href="<%= request.getContextPath() %>/StudentProfileServlet">Edit profile &amp; resume</a>
                 </div>
                 <div class="form-row">
-                    <div><strong>Name</strong><p><%= student.getFullName() %></p></div>
-                    <div><strong>Email</strong><p><%= student.getEmail() %></p></div>
-                    <div><strong>Phone</strong><p><%= student.getPhone() == null || student.getPhone().isBlank() ? "Not provided" : student.getPhone() %></p></div>
-                    <div><strong>Course</strong><p><%= student.getCourse() == null || student.getCourse().isBlank() ? "Not provided" : student.getCourse() %></p></div>
+                    <div><strong>Name</strong><p><%= escapeHtml(student.getFullName()) %></p></div>
+                    <div><strong>Email</strong><p><%= escapeHtml(student.getEmail()) %></p></div>
+                    <div><strong>Phone</strong><p><%= student.getPhone() == null || student.getPhone().isBlank() ? "Not provided" : escapeHtml(student.getPhone()) %></p></div>
+                    <div><strong>Course</strong><p><%= student.getCourse() == null || student.getCourse().isBlank() ? "Not provided" : escapeHtml(student.getCourse()) %></p></div>
                 </div>
             </section>
 
@@ -119,14 +137,14 @@
                     <div class="form-stack">
                         <% for (Application applicationRecord : applications) { %>
                             <article class="application">
-                                <span class="company-logo"><%= applicationRecord.getInternshipCompany() == null || applicationRecord.getInternshipCompany().isBlank() ? "IL" : applicationRecord.getInternshipCompany().substring(0, 1).toUpperCase() %></span>
+                                <span class="company-logo"><%= applicationRecord.getInternshipCompany() == null || applicationRecord.getInternshipCompany().isBlank() ? "IL" : escapeHtml(applicationRecord.getInternshipCompany().substring(0, 1).toUpperCase()) %></span>
                                 <div class="application-copy">
-                                    <strong><a href="<%= request.getContextPath() %>/applyInternship.jsp?id=<%= applicationRecord.getInternshipId() %>"><%= applicationRecord.getInternshipTitle() %></a></strong>
-                                    <span><%= applicationRecord.getInternshipCompany() %> · <%= applicationRecord.getInternshipLocation() %>
+                                    <strong><a href="<%= request.getContextPath() %>/applyInternship.jsp?id=<%= applicationRecord.getInternshipId() %>"><%= escapeHtml(applicationRecord.getInternshipTitle()) %></a></strong>
+                                    <span><%= escapeHtml(applicationRecord.getInternshipCompany()) %> · <%= escapeHtml(applicationRecord.getInternshipLocation()) %>
                                         <% if (applicationRecord.getAppliedDate() != null) { %> · Applied <%= applicationRecord.getAppliedDate().format(dateFormatter) %><% } %>
                                     </span>
                                 </div>
-                                <span class="badge badge-blue"><%= applicationRecord.getStatus() %></span>
+                                <span class="badge badge-blue"><%= escapeHtml(applicationRecord.getStatus()) %></span>
                             </article>
                         <% } %>
                     </div>
@@ -152,10 +170,10 @@
                     <div class="form-stack">
                         <% for (Internship internship : savedInternships) { %>
                             <article class="application">
-                                <span class="company-logo"><%= internship.getCompany() == null || internship.getCompany().isBlank() ? "IL" : internship.getCompany().substring(0, 1).toUpperCase() %></span>
+                                <span class="company-logo"><%= internship.getCompany() == null || internship.getCompany().isBlank() ? "IL" : escapeHtml(internship.getCompany().substring(0, 1).toUpperCase()) %></span>
                                 <div class="application-copy">
-                                    <strong><a href="<%= request.getContextPath() %>/applyInternship.jsp?id=<%= internship.getId() %>"><%= internship.getTitle() %></a></strong>
-                                    <span><%= internship.getCompany() %> · <%= internship.getLocation() %> · <%= internship.isPaid() ? internship.getStipend() : "Unpaid" %></span>
+                                    <strong><a href="<%= request.getContextPath() %>/applyInternship.jsp?id=<%= internship.getId() %>"><%= escapeHtml(internship.getTitle()) %></a></strong>
+                                    <span><%= escapeHtml(internship.getCompany()) %> · <%= escapeHtml(internship.getLocation()) %> · <%= internship.isPaid() ? escapeHtml(internship.getStipend()) : "Unpaid" %></span>
                                 </div>
                                 <div class="dashboard-tools">
                                     <a class="button button-ghost" href="<%= request.getContextPath() %>/applyInternship.jsp?id=<%= internship.getId() %>">View details</a>

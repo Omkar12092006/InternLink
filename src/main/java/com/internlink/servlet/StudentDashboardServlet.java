@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/StudentDashboardServlet")
@@ -33,7 +34,14 @@ public class StudentDashboardServlet extends HttpServlet {
             return;
         }
 
-        List<Application> applications = applicationDAO.getApplicationsByStudentEmail(student.getEmail());
+        List<Application> applications;
+        try {
+            applications = applicationDAO.getApplicationsByStudent(student.getEmail());
+        } catch (SQLException e) {
+            getServletContext().log("Unable to load student applications.", e);
+            applications = List.of();
+            request.setAttribute("dashboardError", "Your applications are temporarily unavailable.");
+        }
         List<Internship> savedInternships = internshipDAO.getBookmarkedByStudentId(student.getId());
         long pendingApplications = applications.stream()
                 .filter(application -> "pending".equalsIgnoreCase(application.getStatus())
