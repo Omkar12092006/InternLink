@@ -2,6 +2,8 @@ package com.internlink.dao;
 
 import com.internlink.model.Admin;
 import com.internlink.model.Company;
+import com.internlink.model.Application;
+import com.internlink.model.Internship;
 import com.internlink.model.Student;
 import com.internlink.util.DBConnection;
 import java.sql.*;
@@ -96,28 +98,45 @@ public class AdminDAO {
     }
 
     public boolean deleteStudent(int studentId) throws SQLException {
-        return executeAccountUpdate("DELETE FROM students WHERE id=?", studentId);
+        return executeUpdate("DELETE FROM students WHERE id=?", studentId);
     }
 
     public boolean verifyCompany(int companyId) throws SQLException {
-        return executeAccountUpdate("UPDATE companies SET verified=1 WHERE id=?", companyId);
+        return executeUpdate("UPDATE companies SET verified=1 WHERE id=?", companyId);
     }
 
     public boolean rejectCompany(int companyId) throws SQLException {
-        return executeAccountUpdate("UPDATE companies SET verified=0 WHERE id=?", companyId);
+        return executeUpdate("UPDATE companies SET verified=0 WHERE id=?", companyId);
     }
 
     public boolean deleteCompany(int companyId) throws SQLException {
-        return executeAccountUpdate("DELETE FROM companies WHERE id=?", companyId);
+        return executeUpdate("DELETE FROM companies WHERE id=?", companyId);
     }
 
-    private boolean executeAccountUpdate(String sql, int accountId) throws SQLException {
+    public List<Internship> getAllInternships() throws SQLException {
+        return new InternshipDAO().getAllForAdmin();
+    }
+
+    public boolean approveInternship(int internshipId) throws SQLException {
+        InternshipDAO.ensureApprovalColumn();
+        return executeUpdate("UPDATE internships SET approved=1 WHERE id=?", internshipId);
+    }
+
+    public boolean deleteInternship(int internshipId) throws SQLException {
+        return executeUpdate("DELETE FROM internships WHERE id=?", internshipId);
+    }
+
+    public List<Application> getAllApplications() throws SQLException {
+        return new ApplicationDAO().getAllApplications();
+    }
+
+    private boolean executeUpdate(String sql, int recordId) throws SQLException {
         Connection connection = DBConnection.getConnection();
         if (connection == null) {
             throw new SQLException("Could not connect to the database.");
         }
         try (Connection con = connection; PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, accountId);
+            ps.setInt(1, recordId);
             return ps.executeUpdate() > 0;
         }
     }

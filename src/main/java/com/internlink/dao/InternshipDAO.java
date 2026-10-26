@@ -8,6 +8,32 @@ import java.util.List;
 
 public class InternshipDAO {
 
+    private static volatile boolean approvalColumnReady;
+
+    public static synchronized void ensureApprovalColumn() throws SQLException {
+        if (approvalColumnReady) {
+            return;
+        }
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection) {
+            boolean columnMissing;
+            try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'internships' AND column_name = 'approved'");
+                 ResultSet rs = ps.executeQuery()) {
+                columnMissing = !rs.next() || rs.getInt(1) == 0;
+            }
+            if (columnMissing) {
+                try (Statement statement = con.createStatement()) {
+                    statement.execute("ALTER TABLE internships ADD COLUMN approved TINYINT(1) NOT NULL DEFAULT 1");
+                }
+            }
+        }
+        approvalColumnReady = true;
+    }
+
     private void ensureCompanyIdColumn() {
         String checkSql = "SELECT COUNT(*) FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = 'internships' AND column_name = 'company_id'";
         try (Connection con = DBConnection.getConnection();
@@ -25,8 +51,14 @@ public class InternshipDAO {
 
     public boolean insert(Internship internship) {
         ensureCompanyIdColumn();
-        String sql = "INSERT INTO internships (company_id, title, company, category, location, duration, description, skills, paid, stipend, applicants, emoji, color, posted_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        String sql = "INSERT INTO internships (company_id, title, company, category, location, duration, description, skills, paid, stipend, applicants, emoji, color, approved, posted_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, internship.getCompanyId());
@@ -56,7 +88,13 @@ public class InternshipDAO {
 
     public boolean update(Internship internship) {
         ensureCompanyIdColumn();
-        String sql = "UPDATE internships SET company_id=?, title=?, company=?, category=?, location=?, duration=?, description=?, skills=?, paid=?, stipend=?, applicants=?, emoji=?, color=?, posted_date=? WHERE id=?";
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        String sql = "UPDATE internships SET company_id=?, title=?, company=?, category=?, location=?, duration=?, description=?, skills=?, paid=?, stipend=?, applicants=?, emoji=?, color=?, approved=0, posted_date=? WHERE id=?";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, internship.getCompanyId());
@@ -99,6 +137,12 @@ public class InternshipDAO {
 
     public List<Internship> getByCompanyId(int companyId) {
         ensureCompanyIdColumn();
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
         List<Internship> list = new ArrayList<>();
         String sql = "SELECT * FROM internships WHERE company_id = ? ORDER BY posted_date DESC, id DESC";
         try (Connection con = DBConnection.getConnection();
@@ -116,9 +160,15 @@ public class InternshipDAO {
     }
 
     public List<Internship> getBookmarkedByStudentId(int studentId) {
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
         List<Internship> list = new ArrayList<>();
         String sql = "SELECT i.* FROM bookmarks b JOIN internships i ON i.id = b.internship_id " +
-                     "WHERE b.student_id = ? ORDER BY b.created_at DESC";
+                     "WHERE b.student_id = ? AND i.approved = 1 ORDER BY b.created_at DESC";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, studentId);
@@ -135,8 +185,14 @@ public class InternshipDAO {
 
     public List<Internship> searchInternships(String keyword, List<String> categories,
             List<String> locations, String duration, String stipendType, int offset, int limit) {
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
         List<Internship> list = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT * FROM internships WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM internships WHERE approved = 1");
         List<Object> params = new ArrayList<>();
 
         if (keyword != null && !keyword.trim().isEmpty()) {
@@ -205,7 +261,13 @@ public class InternshipDAO {
 
     public int countInternships(String keyword, List<String> categories,
             List<String> locations, String duration, String stipendType) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM internships WHERE 1=1");
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM internships WHERE approved = 1");
         List<Object> params = new ArrayList<>();
 
         if (keyword != null && !keyword.trim().isEmpty()) {
@@ -268,6 +330,12 @@ public class InternshipDAO {
     }
 
     public Internship getInternshipById(int id) {
+        try {
+            ensureApprovalColumn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
         String sql = "SELECT * FROM internships WHERE id = ?";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -281,6 +349,40 @@ public class InternshipDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Internship getApprovedInternshipById(int id) throws SQLException {
+        ensureApprovalColumn();
+        String sql = "SELECT * FROM internships WHERE id = ? AND approved = 1";
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection;
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? mapRow(rs) : null;
+            }
+        }
+    }
+
+    public List<Internship> getAllForAdmin() throws SQLException {
+        ensureApprovalColumn();
+        List<Internship> internships = new ArrayList<>();
+        String sql = "SELECT * FROM internships ORDER BY created_at DESC, id DESC";
+        Connection connection = DBConnection.getConnection();
+        if (connection == null) {
+            throw new SQLException("Could not connect to the database.");
+        }
+        try (Connection con = connection;
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                internships.add(mapRow(rs));
+            }
+        }
+        return internships;
     }
 
     private Internship mapRow(ResultSet rs) throws SQLException {
@@ -301,6 +403,7 @@ public class InternshipDAO {
         i.setStipend(rs.getString("stipend"));
         i.setEmoji(rs.getString("emoji"));
         i.setColor(rs.getString("color"));
+        i.setApproved(rs.getBoolean("approved"));
         return i;
     }
 }

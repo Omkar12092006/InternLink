@@ -6,12 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InternshipDAOInsertTest {
 
     @Test
-    void insert_should_persist_internship_for_company() {
+    void insert_should_persist_internship_for_company() throws Exception {
         CompanyDAO companyDAO = new CompanyDAO();
         String email = "internship-test-" + System.currentTimeMillis() + "@example.com";
         String password = "TestPass!123";
@@ -47,5 +49,13 @@ class InternshipDAOInsertTest {
         internship.setPostedDate(LocalDate.now());
 
         assertTrue(dao.insert(internship));
+        Internship createdInternship = dao.getByCompanyId(created.getId()).stream()
+                .filter(item -> "QA Intern".equals(item.getTitle()))
+                .findFirst()
+                .orElseThrow();
+        assertFalse(createdInternship.isApproved());
+        AdminDAO adminDAO = new AdminDAO();
+        assertTrue(adminDAO.approveInternship(createdInternship.getId()));
+        assertNotNull(dao.getApprovedInternshipById(createdInternship.getId()));
     }
 }

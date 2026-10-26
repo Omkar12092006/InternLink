@@ -57,6 +57,9 @@
             <a href="<%= request.getContextPath() %>/AdminDashboardServlet"><span class="material-symbols-outlined">space_dashboard</span>Overview</a>
             <a class="active" href="<%= request.getContextPath() %>/ManageStudentsServlet"><span class="material-symbols-outlined">school</span>Manage students</a>
             <a href="<%= request.getContextPath() %>/ManageCompaniesServlet"><span class="material-symbols-outlined">business</span>Manage companies</a>
+            <a href="<%= request.getContextPath() %>/ManageInternshipsServlet"><span class="material-symbols-outlined">work</span>Manage internships</a>
+            <a href="<%= request.getContextPath() %>/ViewApplicationsServlet"><span class="material-symbols-outlined">assignment</span>View applications</a>
+            <a href="<%= request.getContextPath() %>/ReportsServlet"><span class="material-symbols-outlined">bar_chart</span>Reports</a>
         </nav>
         <div class="side-separator"></div>
         <nav class="side-nav" aria-label="Account navigation">

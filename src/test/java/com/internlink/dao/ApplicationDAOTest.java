@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ApplicationDAOTest {
 
     @Test
-    void getApplicationsByCompanyId_should_return_company_applications_and_update_status() {
+    void getApplicationsByCompanyId_should_return_company_applications_and_update_status() throws Exception {
         CompanyDAO companyDAO = new CompanyDAO();
         String email = "app-review-test-" + System.currentTimeMillis() + "@example.com";
         String password = "TestPass!123";
@@ -56,8 +56,9 @@ class ApplicationDAOTest {
                 .filter(item -> "Application Review Intern".equals(item.getTitle()))
                 .findFirst()
                 .orElseThrow();
-
         ApplicationDAO applicationDAO = new ApplicationDAO();
+        assertFalse(applicationDAO.apply(savedInternship.getId(), "Test Student", "student-review@example.com", "Example University", "I am excited to join."));
+        assertTrue(new AdminDAO().approveInternship(savedInternship.getId()));
         assertTrue(applicationDAO.apply(savedInternship.getId(), "Test Student", "student-review@example.com", "Example University", "I am excited to join."));
 
         List<Application> applications = applicationDAO.getApplicationsByCompanyId(createdCompany.getId());

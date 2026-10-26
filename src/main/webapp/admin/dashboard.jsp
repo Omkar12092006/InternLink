@@ -39,6 +39,15 @@
                 <a href="<%= request.getContextPath() %>/ManageCompaniesServlet">
                     <span class="material-symbols-outlined">business</span>Manage companies
                 </a>
+                <a href="<%= request.getContextPath() %>/ManageInternshipsServlet">
+                    <span class="material-symbols-outlined">work</span>Manage internships
+                </a>
+                <a href="<%= request.getContextPath() %>/ViewApplicationsServlet">
+                    <span class="material-symbols-outlined">assignment</span>View applications
+                </a>
+                <a href="<%= request.getContextPath() %>/ReportsServlet">
+                    <span class="material-symbols-outlined">bar_chart</span>Reports
+                </a>
                 <a href="<%= request.getContextPath() %>/browseInternships.jsp">
                     <span class="material-symbols-outlined">work</span>Browse internships
                 </a>

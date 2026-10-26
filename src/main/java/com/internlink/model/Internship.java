@@ -18,6 +18,7 @@ public class Internship {
     private String stipend;
     private String emoji;
     private String color;
+    private boolean approved;
 
     public Internship() {}
 
@@ -67,6 +68,9 @@ public class Internship {
 
     public String getColor() { return color; }
     public void setColor(String color) { this.color = color; }
+
+    public boolean isApproved() { return approved; }
+    public void setApproved(boolean approved) { this.approved = approved; }
 
     public String[] getSkillsArray() {
         if (skills == null || skills.isEmpty()) return new String[0];
