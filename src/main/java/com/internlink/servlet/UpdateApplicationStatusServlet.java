@@ -71,7 +71,7 @@ public class UpdateApplicationStatusServlet extends HttpServlet {
             return null;
         }
 
-        switch (requested.toLowerCase()) {
+        switch (requested.toLowerCase(java.util.Locale.ROOT)) {
             case "shortlist":
             case "shortlisted":
                 return "Shortlisted";
@@ -84,7 +84,7 @@ public class UpdateApplicationStatusServlet extends HttpServlet {
             case "pending":
                 return "Pending";
             default:
-                return requested;
+                return null;
         }
     }
 

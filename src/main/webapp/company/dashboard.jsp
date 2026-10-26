@@ -51,6 +51,7 @@
                 <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a href="postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
+                <a href="<%= request.getContextPath() %>/ScheduleInterviewServlet"><span class="material-symbols-outlined">calendar_month</span>Interviews</a>
                 <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>

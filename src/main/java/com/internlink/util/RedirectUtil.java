@@ -24,6 +24,11 @@ public final class RedirectUtil {
         if ("student/dashboard.jsp".equals(destination)) {
             return "student/dashboard.jsp";
         }
+        if ("StudentProfileServlet".equals(destination)
+                || "MyApplicationsServlet".equals(destination)
+                || "StudentInterviewsServlet".equals(destination)) {
+            return destination;
+        }
 
         Matcher application = matcher(STUDENT_APPLICATION, destination);
         if (application != null) {
@@ -42,7 +47,8 @@ public final class RedirectUtil {
                 || "company/profile.jsp".equals(destination)
                 || "company/candidates.jsp".equals(destination)
                 || "CompanyCandidatesServlet".equals(destination)
-                || "ReviewApplicationsServlet".equals(destination)) {
+                || "ReviewApplicationsServlet".equals(destination)
+                || "ScheduleInterviewServlet".equals(destination)) {
             return destination;
         }
 

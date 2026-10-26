@@ -22,12 +22,16 @@ class RedirectUtilTest {
                 RedirectUtil.companyAfterLogin("/InternLink", "CompanyCandidatesServlet"));
         assertEquals("/InternLink/company/dashboard.jsp",
                 RedirectUtil.companyAfterLogin("/InternLink", "//example.com"));
+        assertEquals("/InternLink/ScheduleInterviewServlet",
+                RedirectUtil.companyAfterLogin("/InternLink", "ScheduleInterviewServlet"));
     }
 
     @Test
     void loginUrlsEncodeNestedReturnDestinations() {
         assertEquals("/InternLink/student/login.jsp?redirect=applyInternship.jsp%3Fid%3D42",
                 RedirectUtil.studentLoginUrl("/InternLink", "applyInternship.jsp?id=42"));
+        assertEquals("/InternLink/student/login.jsp?redirect=StudentInterviewsServlet",
+                RedirectUtil.studentLoginUrl("/InternLink", "StudentInterviewsServlet"));
     }
 
     @Test

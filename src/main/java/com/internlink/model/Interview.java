@@ -10,6 +10,10 @@ public class Interview {
     private String meetingLink;
     private String status;
     private String notes;
+    private String applicantName;
+    private String applicantEmail;
+    private String internshipTitle;
+    private String internshipCompany;
 
     public Interview() {}
 
@@ -27,4 +31,12 @@ public class Interview {
     public void setStatus(String status) { this.status = status; }
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    public String getApplicantName() { return applicantName; }
+    public void setApplicantName(String applicantName) { this.applicantName = applicantName; }
+    public String getApplicantEmail() { return applicantEmail; }
+    public void setApplicantEmail(String applicantEmail) { this.applicantEmail = applicantEmail; }
+    public String getInternshipTitle() { return internshipTitle; }
+    public void setInternshipTitle(String internshipTitle) { this.internshipTitle = internshipTitle; }
+    public String getInternshipCompany() { return internshipCompany; }
+    public void setInternshipCompany(String internshipCompany) { this.internshipCompany = internshipCompany; }
 }

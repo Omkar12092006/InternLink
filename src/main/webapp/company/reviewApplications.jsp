@@ -48,6 +48,7 @@
         .badge-shortlisted { background: rgba(34, 197, 94, 0.12); color: #bbf7d0; }
         .badge-rejected { background: rgba(239, 68, 68, 0.12); color: #fecaca; }
         .badge-selected { background: rgba(168, 85, 247, 0.12); color: #e9d5ff; }
+        .badge-interview { background: rgba(14, 165, 233, 0.12); color: #bae6fd; }
         .button-small { padding: 8px 10px; font-size: 11px; }
         .table-wrap { overflow-x: auto; }
         .application-table { width: 100%; border-collapse: collapse; min-width: 900px; }
@@ -71,6 +72,7 @@
                 <a href="<%= request.getContextPath() %>/CompanyProfileServlet"><span class="material-symbols-outlined">person</span>Company Profile</a>
                 <a href="<%= request.getContextPath() %>/company/postings.jsp"><span class="material-symbols-outlined">work</span>Postings</a>
                 <a class="active" href="<%= request.getContextPath() %>/ReviewApplicationsServlet"><span class="material-symbols-outlined">fact_check</span>Review Applications</a>
+                <a href="<%= request.getContextPath() %>/ScheduleInterviewServlet"><span class="material-symbols-outlined">calendar_month</span>Interviews</a>
                 <a href="<%= request.getContextPath() %>/CompanyCandidatesServlet"><span class="material-symbols-outlined">group</span>Candidates</a>
             </nav>
             <div class="side-separator"></div>
@@ -87,6 +89,7 @@
                     <p>Track incoming applications and decide who to shortlist or move forward.</p>
                 </div>
                 <div class="dashboard-tools">
+                    <a href="<%= request.getContextPath() %>/ScheduleInterviewServlet" class="button button-primary">Schedule interviews</a>
                     <a href="<%= request.getContextPath() %>/company/dashboard.jsp" class="button button-ghost">Back to dashboard</a>
                 </div>
             </header>
@@ -126,7 +129,7 @@
                                 <% for (Application app : applications) { %>
                                     <% String status = app.getStatus() == null ? "Pending" : app.getStatus(); %>
                                     <% String badgeClass = "badge-pending"; %>
-                                    <% if ("Shortlisted".equals(status)) { badgeClass = "badge-shortlisted"; } else if ("Rejected".equals(status)) { badgeClass = "badge-rejected"; } else if ("Selected".equals(status)) { badgeClass = "badge-selected"; } %>
+                                    <% if ("Shortlisted".equals(status)) { badgeClass = "badge-shortlisted"; } else if ("Rejected".equals(status)) { badgeClass = "badge-rejected"; } else if ("Selected".equals(status)) { badgeClass = "badge-selected"; } else if (status.startsWith("Interview ")) { badgeClass = "badge-interview"; } %>
                                     <tr>
                                         <td>
                                             <div class="applicant-meta">
